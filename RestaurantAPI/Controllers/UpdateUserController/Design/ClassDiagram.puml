@@ -1,0 +1,57 @@
+@startuml
+package Controller {
+class UpdateController {
+    + UpdateService : IUpdateService
+    + UpdateUser(UserdetailBO userbo) : IActionResult
+} 
+
+}
+package "Services" {
+    interface IUpdateService {
+ 
+        + UpdateUser(UserDetailsBO userbo): ServiceResult<bool>
+    }
+}
+
+package "Repository" {
+    class UpdateRepository {
+
+        + UpdateUser(UserDetailsBO userbo): bool
+        
+    }
+}
+
+package "BOs"{
+    class UserDetailsBO {
+         + int userid
+        + varchar Email
+        + varchar Password
+        + varchar Phonenumber
+        + DateTime DOB
+        +varchar Userimage
+        + DateTime CreatedOn
+        + DateTime UpdatedOn      
+    }
+  
+}
+package Helpers {
+    Class Utilites {
+        + CheckAuthHeader(Request req) : bool
+    }
+
+    Class ServerConstants {
+        + AuthHeaderKey : string
+    }
+      Class ServerResult {
+        + ServiceResult : <T>
+    }
+}
+
+IUpdateService *-- UpdateController : uses
+UpdateRepository *-- IUpdateService : uses
+UserDetailsBO *-- IUpdateService : uses
+ServerResult *-- IUpdateService :uses
+
+Utilites *-- Controller : uses
+ServerConstants *-- Utilites : uses
+@enduml

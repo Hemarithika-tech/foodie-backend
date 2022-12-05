@@ -1,0 +1,72 @@
+@startuml
+package Controller {
+
+class ConfigController {
+     + ConfigService : IConfigService
+     + GetUserData(int user_id,string platform) : IActionResult
+    }
+
+}
+package "Services" {
+    interface IConfigService {
+     
+        + GetUserData(int user_id,string platform) :  ServiceResult<ConfigBO>
+    }
+}
+
+package "Repository" {
+   
+    class ConfigRepository {
+    + GetUserData(int user_id,string platform) :  ConfigBO
+    }
+}
+
+package "BOs"{
+    class VersionBO {
+        + string Version
+        + string Platform
+    }
+     class UserDetailBO {
+        + int userid
+        + varchar Email
+        + varchar Password
+        + varchar PhoneNumber
+        + DateTime DOB
+        + bool IsNotificationOn
+        + bool IsLocationOn
+        + DateTime CreatedOn
+        + DateTime UpdatedOn     
+    }
+    class ConfigBO{
+        VersionBO versionDetail
+        UserDetailBO userData
+    }
+   
+}
+package Helpers {
+    Class Utilites {
+        + CheckAuthHeader(Request req) : bool
+    }
+
+    Class ServerConstants {
+        + AuthHeaderKey : string
+    }
+     Class ServerResult {
+        + ServiceResult : <T>
+    }
+}
+
+
+
+Utilites *-- ConfigController : uses
+ServerConstants *-- Utilites : uses
+ServerResult *-- IConfigService : uses
+IConfigService *-- ConfigController : uses
+ConfigRepository *-- IConfigService : uses
+ConfigBO *-- IConfigService : uses
+VersionBO *-- ConfigBO : uses
+UserDetailBO *-- ConfigBO : uses
+
+
+
+@enduml

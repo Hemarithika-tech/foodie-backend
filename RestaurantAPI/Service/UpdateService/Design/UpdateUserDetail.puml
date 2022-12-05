@@ -1,0 +1,21 @@
+@startuml
+
+title UpdateUserDetail Service
+autonumber
+
+participant UpdateController
+participant UpdateService #LightSeaGreen
+participant UpdateRepository
+
+alt (try)
+
+    UpdateController -> UpdateService : UpdateUser(userbo)
+    UpdateService -> UpdateRepository : UpdateUser(userbo)
+    UpdateRepository -> UpdateService : Return Boolean (success/failure)
+    UpdateService -> UpdateController : Return ServiceResult - Success (UserDetailBO)
+
+
+else (catch)
+    UpdateService -> UpdateController : RETURN Failure Result
+
+end

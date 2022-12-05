@@ -1,0 +1,58 @@
+@startuml
+package Controller {
+class SignupController {
+   + SignupService : ISignupService
+   + CreateUser(UserDetailBO userbo) : IActionResult
+} 
+
+}
+package "Services" {
+    interface ISignupService {
+ 
+      + CreateUser(UserDetailBO userbo) : ServiceResult<UserDetailBO>>
+    }
+}
+
+package "Repository" {
+    class SignupRepository {
+
+  + CreateUser(UserDetailBO userbo) : UserDetailBO
+        
+    }
+}
+
+package "BOs"{
+   
+    class UserDetailBO {
+        + int userid
+        + varchar Email
+        + varchar Password
+        + varchar Phonenumber
+        + DateTime DOB
+        +varchar Userimage
+        + DateTime CreatedOn
+        + DateTime UpdatedOn     
+    }
+  
+}
+package Helpers {
+    Class Utilites {
+        + CheckAuthHeader(Request req) : bool
+    }
+
+    Class ServerConstants {
+        + AuthHeaderKey : string
+    }
+      Class ServerResult {
+        + ServiceResult : <T>
+    }
+}
+
+ISignupService *-- SignupController : uses
+SignupRepository *-- ISignupService : uses
+UserDetailBO *-- ISignupService : uses
+
+ServerResult*--ISignupService : uses
+Utilites *-- Controller : uses
+ServerConstants *-- Utilites : uses
+@enduml

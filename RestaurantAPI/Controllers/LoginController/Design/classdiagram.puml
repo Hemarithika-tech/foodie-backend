@@ -1,0 +1,59 @@
+@startuml
+package Controller {
+class LoginController {
+    + LoginService : ILoginService
+    + VerifyUser(string email,string password) : IActionResult
+} 
+
+}
+package "Services" {
+    interface ILoginService {
+ 
+        + VerifyUser(string email,string password ): ServiceResult<UserDetailBO>
+    }
+}
+
+package "Repository" {
+    class LoginRepository {
+
+        + VerifyUser(string email,string password): UserDetailBO
+        
+    }
+}
+
+package "BOs"{
+   
+     class UserDetailBO {
+        + int userid
+        + varchar Email
+        + varchar Password
+        + varchar PhoneNumber
+        + DateTime DOB
+        + bool IsNotificationOn
+        + bool IsLocationOn
+        + DateTime CreatedOn
+        + DateTime UpdatedOn     
+    }
+  
+}
+package Helpers {
+    Class Utilites {
+        + CheckAuthHeader(Request req) : bool
+    }
+
+    Class ServerConstants {
+        + AuthHeaderKey : string
+    }
+      Class ServerResult {
+        + ServiceResult : <T>
+    }
+}
+
+ILoginService *-- LoginController : uses
+LoginRepository *-- ILoginService : uses
+UserDetailBO *-- ILoginService : uses
+ServerResult *-- ILoginService : uses
+
+Utilites *-- Controller : uses
+ServerConstants *-- Utilites : uses
+@enduml

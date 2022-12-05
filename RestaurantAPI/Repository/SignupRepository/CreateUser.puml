@@ -1,0 +1,40 @@
+@startuml
+
+title CreateUserDetail Repository
+autonumber
+hide footbox
+
+participant SignupService
+participant SignupRepository #LightSeaGreen
+
+
+
+ SignupService-> SignupRepository : CreateUserDetail(userbo)
+
+    SignupRepository -> SignupRepository : Create new instance -> DataTable as dsRecords
+
+    SignupRepository -> SignupRepository : Create new instance -> SqlCommand as cmd by passing ("CreateUserDetail",DBConnectionString)
+
+    SignupRepository -> SignupRepository : Assign cmd.command as CommandType.StoredProcedure
+
+    SignupRepository -> SignupRepository : Create new instance -> SqlDataAdapter as adapter
+    
+    alt (DBConnectionString.State == ConnectionState.Closed)
+        SignupRepository -> SignupRepository : DBConnectionString.Open()
+    end
+
+   SignupRepository -> SignupRepository : Add Parameter and send signupbo
+   SignupRepository -> SignupRepository : Excute.ExecuteNonQuery()
+
+
+    SignupRepository -> SignupRepository : DBConnectionString.Close()
+
+    SignupRepository -> SignupRepository : Create new instance "IsUserCreated"-> Assign true if atleast one row affected
+    
+    SignupRepository -> SignupRepository : Assign false if 0 rows affected
+
+    SignupRepository -> SignupService: Returns IsUserCreated
+
+
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+
+title VerifyUser - LoginController
+autonumber
+hide footbox
+
+participant Request
+participant LoginController #LightSeaGreen
+participant Utilites 
+participant LoginSerivce  
+
+Request -> LoginController : verify user
+
+alt (try block)
+   LoginController -> Utilites : Validate Auth Header
+    Utilites -> LoginController : returns TRUE or FALSE
+
+    alt (Valid Header - TRUE)
+        LoginController -> LoginSerivce : Call LoginServices.VerifyUser(string email,string password )
+        LoginSerivce -> LoginController : returns response true/false
+       
+        alt#Yellow #LightGreen (success : 200) 
+            LoginController -> Request : Ok 200 return True
+        else #LightGoldenRodYellow (Failure)
+            LoginController -> Request : Server Error 500 return Empty
+        end
+
+        note left: Uses Extension Resolver Method to return response
+    else #LightGoldenRodYellow (In Valid Header - FALSE)
+        LoginController -> Request : Return 401 - UnAuthorized 
+    end
+
+else #LightGoldenRodYellow (catch block)
+    LoginController -> Request : Exception at Controller level - Server Error 500 return empty
+end
+

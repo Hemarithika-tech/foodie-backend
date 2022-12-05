@@ -1,0 +1,79 @@
+@startuml
+package Controller {
+class RestaurantController {
+   
+    + CreateUser(userbo) : IActionResult
+    + VerifyUser(userbo) : IActionResult
+    + UpdateUser(userbo) : IActionResult
+    + GetUser() : IActionResult
+   
+} 
+class ConfigController {
+     + GetVersion() : IActionResult
+    }
+
+}
+package "Services" {
+    interface IRestaurantService {
+        + CreateUser(userbo) : ServiceResult<bool>>
+        + VerifyUser(userbo): ServiceResult<bool>
+        + UpdateUser(userbo) :  ServiceResult<bool>
+        + GetUser() : ServiceResult<userbo>
+        + GetVersion() :  ServiceResult<string>
+    }
+}
+
+package "Repository" {
+    class RestaurantRepository {
+        + UserCreated(userbo) : bool
+        + UserVerified(userbo) : bool
+        + UserUpdated(userbo): bool
+        + ReadUser(): UserBO
+        
+    }
+    class ConfigRepository {
+    + GetVersion() :  string
+    }
+}
+
+package "BOs"{
+    class UserBO {
+        + int userid
+        + varchar Name
+        + varchar Email
+        + DateTime  DOB
+        + varchar PhoneNumber
+        + varchar UserImage
+        + bool IsNotify
+        + bool IsUserLocation
+        + DateTime CreatedOn
+        + DateTime UpdatedOn     
+    }
+    class "ConfigBO"
+    {
+        + varchar version
+    }
+}
+package Helpers {
+    Class Utilites {
+        + CheckAuthHeader(Request req) : bool
+    }
+
+    Class ServerConstants {
+        + AuthHeaderKey : string
+    }
+}
+
+IRestaurantService *-- RestaurantController : uses
+RestaurantRepository *-- IRestaurantService : uses
+UserBO *-- IRestaurantService : uses
+
+Utilites *-- Controller : uses
+ServerConstants *-- Utilites : uses
+
+IRestaurantService *-- ConfigController : uses
+ConfigRepository *-- IRestaurantService : uses
+ConfigBO *-- IRestaurantService : uses
+
+
+@enduml

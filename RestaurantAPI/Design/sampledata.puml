@@ -1,0 +1,15 @@
+title 
+
+| Field Name | Data Type | Field Format | Field Size | Example |
+| userid | integer |  | 100 | 1 |
+| Name | VARCHAR | | 20 | User1 |
+| Email | VARCHAR | | 30 | user@gmail.com |
+| DOB | DateTime | MM-DD-YYYY | | 06-16-1997 |
+| Phonenumber | VARCHAR | 10| | 9876543210 |
+| IsDeleted | bit | | 1 | false |
+| IsNotify | bit | | 1 | false |
+| IsGetStartedClicked | bit | | 1 | true |
+| IsUserLocation | bit | | 1 | false |
+end title
+
+@enduml

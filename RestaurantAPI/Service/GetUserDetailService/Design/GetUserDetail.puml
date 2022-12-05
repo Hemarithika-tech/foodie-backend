@@ -1,0 +1,26 @@
+@startuml
+
+title GetUserDetail Service
+autonumber
+
+participant UserDetailController
+participant UserDetailService #LightSeaGreen
+participant UserDetailRepository
+
+alt (try)
+
+    UserDetailController -> UserDetailService : GetUserDetail(userid)
+   UserDetailService -> UserDetailRepository : GetUserDetail(userid)
+    UserDetailRepository -> UserDetailService : Return UserDetailBO
+
+    UserDetailService -> UserDetailController : Return ServiceResult - Success (UserDetailBO)
+    ' alt (True - Success) 
+
+    ' else (False - Update Failed)
+    '    UserDetailService -> UserDetailController : Return ServiceResult - Update Failed (Empty Data)
+    ' end
+
+else (catch)
+    UserDetailService -> UserDetailController : Return ServiceResult - Failure
+
+end

@@ -1,0 +1,39 @@
+@startuml
+
+title UpdateUser Repository
+autonumber
+hide footbox
+
+participant UpdateUserService
+participant  UpdateUserRepository #LightSeaGreen
+
+
+  UpdateUserService->  UpdateUserRepository : UpdateUser(userbo)
+
+     UpdateUserRepository ->  UpdateUserRepository : Create new instance -> DataTable as dsRecords
+
+    UpdateUserRepository ->  UpdateUserRepository : Create new instance -> SqlCommand as cmd by passing ("CreateUserDetail",DBConnectionString)
+
+    UpdateUserRepository ->  UpdateUserRepository : Assign cmd.command as CommandType.StoredProcedure
+
+  UpdateUserRepository ->  UpdateUserRepository : Create new instance -> SqlDataAdapter as adapter
+    
+    alt (DBConnectionString.State == ConnectionState.Closed)
+        UpdateUserRepository ->  UpdateUserRepository : DBConnectionString.Open()
+    end
+
+     UpdateUserRepository -> UpdateUserRepository : Add Parameter and send userbo
+UpdateUserRepository -> UpdateUserRepository : Excute.ExecuteNonQuery()
+
+
+    UpdateUserRepository -> UpdateUserRepository: DBConnectionString.Close()
+
+ UpdateUserRepository-> UpdateUserRepository: Create new instance "IsUserUpdated"-> Assign true if atleast one row affected
+    
+UpdateUserRepository -> UpdateUserRepository: Assign false if 0 rows affected
+
+   UpdateUserRepository -> UpdateUserService: Returns IsUserUpdated
+
+
+
+@enduml

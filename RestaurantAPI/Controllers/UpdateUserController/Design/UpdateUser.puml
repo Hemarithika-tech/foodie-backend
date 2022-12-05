@@ -1,0 +1,36 @@
+@startuml
+
+title UpdateUser - UpdateController
+autonumber
+hide footbox
+
+participant Request
+participant UpdateController #LightSeaGreen
+participant Utilites 
+participant UpdateSerivce  
+
+Request -> UpdateController : update /user detail
+
+alt (try block)
+    UpdateController -> Utilites : Validate Auth Header
+    Utilites -> UpdateController : returns TRUE or FALSE
+
+    alt (Valid Header - TRUE)
+        UpdateController -> UpdateSerivce : Call UpdateServices.UpdateUser(UserDetailBO userbo)
+        UpdateSerivce -> UpdateController : returns response success/failure
+       
+        alt#Yellow #LightGreen (success : 200) 
+            UpdateController -> Request : Ok 200 return True
+        else #LightGoldenRodYellow (Failure)
+            UpdateController -> Request : Server Error 500 return Empty
+        end
+
+        note left: Uses Extension Resolver Method to return response
+    else #LightGoldenRodYellow (In Valid Header - FALSE)
+        UpdateController -> Request : Return 401 - UnAuthorized 
+    end
+
+else #LightGoldenRodYellow (catch block)
+    UpdateController -> Request : Exception at Controller level - Server Error 500 return empty
+end
+

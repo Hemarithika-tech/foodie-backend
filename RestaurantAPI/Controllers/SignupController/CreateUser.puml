@@ -1,0 +1,36 @@
+@startuml
+
+title CreateUser - SignupController
+autonumber
+hide footbox
+
+participant Request
+participant SignupController #LightSeaGreen
+participant Utilites 
+participant SignupSerivce  
+
+Request -> SignupController : create new user
+
+alt (try block)
+    SignupController -> Utilites : Validate Auth Header
+    Utilites -> SignupController : returns TRUE or FALSE
+
+    alt (Valid Header - TRUE)
+       SignupController -> SignupSerivce : Call SignupServices.CreateUser(UserDetailBO userbo)
+       SignupSerivce -> SignupController : returns response success/failure
+       
+        alt#Yellow #LightGreen (success : 200) 
+           SignupController -> Request : Ok 200 return True
+        else #LightGoldenRodYellow (Failure)
+            SignupController -> Request : Server Error 500 return False
+        end
+
+        note left: Uses Extension Resolver Method to return response
+    else #LightGoldenRodYellow (In Valid Header - FALSE)
+       SignupController -> Request : Return 401 - UnAuthorized 
+    end
+
+else #LightGoldenRodYellow (catch block)
+    SignupController -> Request : Exception at Controller level - Server Error 500 return empty
+end
+

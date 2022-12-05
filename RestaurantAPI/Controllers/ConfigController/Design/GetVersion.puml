@@ -1,0 +1,36 @@
+@startuml
+
+title GetVersion - ConfigController
+autonumber
+hide footbox
+
+participant Request
+participant ConfigController #LightSeaGreen
+participant Utilites 
+participant ConfigSerivce  
+
+Request -> ConfigController : GetVersionAndUserData
+
+alt (try block)
+    ConfigController -> Utilites : Validate Auth Header
+    Utilites -> ConfigController : returns TRUE or FALSE
+
+    alt (Valid Header - TRUE)
+        ConfigController -> ConfigSerivce : Call ConfigService.GetUserData()
+        ConfigSerivce -> ConfigController : returns version_number
+       
+        alt#Yellow #LightGreen (success : 200) 
+            ConfigController -> Request : Ok 200 return version_number
+        else #LightGoldenRodYellow (Failure)
+            ConfigController -> Request : Server Error 500 return Empty
+        end
+
+        note left: Uses Extension Resolver Method to return response
+    else #LightGoldenRodYellow (In Valid Header - FALSE)
+        ConfigController -> Request : Return 401 - UnAuthorized 
+    end
+
+else #LightGoldenRodYellow (catch block)
+    ConfigController -> Request : Exception at Controller level - Server Error 500 return empty
+end
+

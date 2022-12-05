@@ -1,0 +1,20 @@
+@startuml
+
+title CreateUser Service
+autonumber
+
+participant SignupController
+participant SignupService #LightSeaGreen
+participant SignupRepository
+
+alt (try)
+
+   SignupController -> SingupService : CreateUser(UserDetailBO userbo)
+   SignupService -> SignupRepository : CreateUser(UserDetailBO userbo)
+   SignupRepository -> SignupService : Return Boolean (success/failure)
+    SignupService -> SignupController : Return ServiceResult - Success (UserDetailBO)
+
+else (catch)
+   SignupService -> SignupController : RETURN Failure Result
+
+end
