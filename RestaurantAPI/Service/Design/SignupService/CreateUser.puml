@@ -11,7 +11,7 @@ alt (try)
 
    SignupController -> SingupService : CreateUser(UserDetailBO userbo)
    SignupService -> SignupRepository : CreateUser(UserDetailBO userbo)
-   SignupRepository -> SignupService : Return Boolean (success/failure)
+   SignupRepository -> SignupService : Return UserDetailBO
     SignupService -> SignupController : Return ServiceResult - Success (UserDetailBO)
 
 else (catch)

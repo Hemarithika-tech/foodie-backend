@@ -9,31 +9,34 @@ participant SignupRepository #LightSeaGreen
 
 
 
- SignupService-> SignupRepository : CreateUserDetail(userbo)
+ SignupService-> SignupRepository : CreateUserDetail(UserDetailBO userbo)
 
-    SignupRepository -> SignupRepository : Create new instance -> DataTable as dsRecords
+    SignupRepository-> SignupRepository: Create instance as "userdetailbo" for "UsersDetailBO"
 
     SignupRepository -> SignupRepository : Create new instance -> SqlCommand as cmd by passing ("CreateUserDetail",DBConnectionString)
 
     SignupRepository -> SignupRepository : Assign cmd.command as CommandType.StoredProcedure
 
-    SignupRepository -> SignupRepository : Create new instance -> SqlDataAdapter as adapter
-    
+   
     alt (DBConnectionString.State == ConnectionState.Closed)
         SignupRepository -> SignupRepository : DBConnectionString.Open()
     end
 
-   SignupRepository -> SignupRepository : Add Parameter and send signupbo
+   SignupRepository -> SignupRepository : Assign userbo values in parameter
    SignupRepository -> SignupRepository : Excute.ExecuteNonQuery()
 
 
+  SignupRepository-> SignupRepository: Get all the values in UserDetail table
+    
     SignupRepository -> SignupRepository : DBConnectionString.Close()
 
-    SignupRepository -> SignupRepository : Create new instance "IsUserCreated"-> Assign true if atleast one row affected
+alt (Response - Data found)
+    SignupRepository-> SignupRepository:  Assign data to userdetailbo object
     
-    SignupRepository -> SignupRepository : Assign false if 0 rows affected
+    end
 
-    SignupRepository -> SignupService: Returns IsUserCreated
+
+   SignupRepository -> SignupService: Returns userdetailbo
 
 
 

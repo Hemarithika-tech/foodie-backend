@@ -53,7 +53,7 @@ ILoginService *-- LoginController : uses
 LoginRepository *-- ILoginService : uses
 UserDetailBO *-- ILoginService : uses
 ServerResult *-- ILoginService : uses
-
+UserDetailBO *-- LoginRepository : uses
 Utilites *-- Controller : uses
 ServerConstants *-- Utilites : uses
 @enduml

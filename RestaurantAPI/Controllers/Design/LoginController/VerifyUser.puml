@@ -17,12 +17,12 @@ alt (try block)
 
     alt (Valid Header - TRUE)
         LoginController -> LoginSerivce : Call LoginServices.VerifyUser(string email,string password )
-        LoginSerivce -> LoginController : returns response true/false
+        LoginSerivce -> LoginController : return UserDetailBO 
        
         alt#Yellow #LightGreen (success : 200) 
-            LoginController -> Request : Ok 200 return True
+            LoginController -> Request : Ok 200 return UserDetailBO
         else #LightGoldenRodYellow (Failure)
-            LoginController -> Request : Server Error 500 return Empty
+            LoginController -> Request : l 
         end
 
         note left: Uses Extension Resolver Method to return response

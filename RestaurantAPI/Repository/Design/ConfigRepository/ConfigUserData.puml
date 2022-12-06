@@ -1,0 +1,46 @@
+@startuml
+
+title ConfigUserDetails Repository
+autonumber
+hide footbox
+
+participant ConfigService
+participant ConfigRepository #LightSeaGreen
+
+
+
+ ConfigService-> ConfigRepository : GetUserData(string platform,int userid)
+
+    ConfigRepository-> ConfigRepository: Create instance as "configbo" for "ConfigBO"
+
+    ConfigRepository -> ConfigRepository : Create new instance -> SqlCommand as cmd by passing ("GetUserData",DBConnectionString)
+
+    ConfigRepository -> ConfigRepository : Assign cmd.command as CommandType.StoredProcedure
+
+   
+    alt (DBConnectionString.State == ConnectionState.Closed)
+        ConfigRepository -> ConfigRepository : DBConnectionString.Open()
+    end
+
+   ConfigRepository -> ConfigRepository : Assign Parameter(platform)
+   ConfigRepository -> ConfigRepository : Assign Parameter(userid)
+
+   ConfigRepository -> ConfigRepository : Excute.ExecuteNonQuery()
+
+
+  ConfigRepository-> ConfigRepository: Assign data from DB for VersionBO and UserDetailBO
+
+  alt (Response - DataFound)
+        ConfigRepository -> ConfigRepository :  Assign UserDetailBO to configbo.UserDetaiBO
+        ConfigRepository -> ConfigRepository :  Assign VersionBO to configbo.VersionBO
+   
+    end
+
+  ConfigRepository -> ConfigRepository : DBConnectionString.Close()
+
+
+   ConfigRepository -> ConfigService: Returns configbo
+
+
+
+@enduml

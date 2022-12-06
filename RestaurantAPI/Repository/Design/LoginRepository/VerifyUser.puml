@@ -1,0 +1,43 @@
+@startuml
+
+title VerifyLoginUser Repository
+autonumber
+hide footbox
+
+participant VerifyLoginService
+participant  VerifyLoginRepository #LightSeaGreen
+
+
+
+  VerifyLoginService->  VerifyLoginRepository : VerifyUser(string email,string password)
+
+    VerifyLoginRepository-> VerifyLoginRepository: Create instance as "userdetailbo" for "UsersDetailBO"
+
+     VerifyLoginRepository ->  VerifyLoginRepository : Create new instance -> SqlCommand as cmd by passing ("VerifyUserDetail",DBConnectionString)
+
+    VerifyLoginRepository ->  VerifyLoginRepository : Assign cmd.command as CommandType.StoredProcedure
+
+    
+    alt (DBConnectionString.State == ConnectionState.Closed)
+        VerifyLoginRepository ->  VerifyLoginRepository : DBConnectionString.Open()
+    end
+    
+ VerifyLoginRepository -> VerifyLoginRepository : Assign Parameter (email)
+    VerifyLoginRepository -> VerifyLoginRepository : Assign Parameter (password )
+
+VerifyLoginRepository -> VerifyLoginRepository : Excute.ExecuteNonQuery()
+
+
+    VerifyLoginRepository-> VerifyLoginRepository: Get all the data in UserDetail table
+    
+    VerifyLoginRepository -> VerifyLoginRepository : DBConnectionString.Close()
+
+alt (Response - Data found)
+    VerifyLoginRepository-> VerifyLoginRepository:  Assign data to userdetailbo object
+    
+    end
+
+   VerifyLoginRepository -> VerifyLoginService: Returns userdetailbo
+
+
+@enduml

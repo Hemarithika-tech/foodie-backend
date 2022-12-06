@@ -51,7 +51,7 @@ package Helpers {
 ISignupService *-- SignupController : uses
 SignupRepository *-- ISignupService : uses
 UserDetailBO *-- ISignupService : uses
-
+UserDetailBO *-- SignupRepository : uses
 ServerResult*--ISignupService : uses
 Utilites *-- Controller : uses
 ServerConstants *-- Utilites : uses

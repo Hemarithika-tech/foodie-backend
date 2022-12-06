@@ -63,9 +63,11 @@ ServerConstants *-- Utilites : uses
 ServerResult *-- IConfigService : uses
 IConfigService *-- ConfigController : uses
 ConfigRepository *-- IConfigService : uses
+ConfigBO *-- ConfigRepository : uses
 ConfigBO *-- IConfigService : uses
 VersionBO *-- ConfigBO : uses
 UserDetailBO *-- ConfigBO : uses
+
 
 
 

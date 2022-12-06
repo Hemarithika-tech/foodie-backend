@@ -1,6 +1,6 @@
 @startuml
 
-title GetVersion - ConfigController
+title GetUserData - ConfigController
 autonumber
 hide footbox
 
@@ -16,11 +16,11 @@ alt (try block)
     Utilites -> ConfigController : returns TRUE or FALSE
 
     alt (Valid Header - TRUE)
-        ConfigController -> ConfigSerivce : Call ConfigService.GetUserData()
-        ConfigSerivce -> ConfigController : returns version_number
+        ConfigController -> ConfigSerivce : Call ConfigService.GetUserData(string platform, int userid)
+        ConfigSerivce -> ConfigController : Returns ConfigBO
        
         alt#Yellow #LightGreen (success : 200) 
-            ConfigController -> Request : Ok 200 return version_number
+            ConfigController -> Request : Ok 200 return ConfigBO
         else #LightGoldenRodYellow (Failure)
             ConfigController -> Request : Server Error 500 return Empty
         end

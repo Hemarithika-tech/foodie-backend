@@ -1,0 +1,21 @@
+@startuml
+
+title ConfigUserData Service
+autonumber
+
+participant ConfigController
+participant ConfigService #LightSeaGreen
+participant ConfigRepository
+
+alt (try)
+
+   ConfigController -> ConfigService : GetUserData(int userid,string platform)
+   ConfigService -> ConfigRepository : GetUserData(int userid,string platform)
+   ConfigRepository ->ConfigService : Return ConfigBO
+   ConfigService -> ConfigController : Return ServiceResult - Success (ConfigBO)
+
+
+else (catch)
+    ConfigService -> ConfigController : RETURN Failure Result
+
+end

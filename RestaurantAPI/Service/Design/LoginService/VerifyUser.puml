@@ -11,7 +11,7 @@ alt (try)
 
    LoginController -> LoginService : VerifyUser(string email,string password)
    LoginService -> LoginRepository : VerifyUser(string email,string password)
-    LoginRepository ->LoginService : Return Boolean (success/failure)
+    LoginRepository ->LoginService : Return UserDetailBO
     LoginService -> LoginController : Return ServiceResult - Success (UserDetailBO)
 
 
