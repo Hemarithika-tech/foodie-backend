@@ -1,4 +1,4 @@
-@startuml
+@startuml ER
 
 title ER
 
@@ -17,3 +17,11 @@ entity "UserDetail" {
     CreatedOn : DateTime
     UpdatedOn : DateTime
 }
+
+entity "VersionDetail" {
+ 
+ Platform :VARCHAR(50)
+ Version : VARCHAR(10)
+}
+
+@enduml

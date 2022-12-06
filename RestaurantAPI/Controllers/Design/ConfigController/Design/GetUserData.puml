@@ -34,3 +34,4 @@ else #LightGoldenRodYellow (catch block)
     ConfigController -> Request : Exception at Controller level - Server Error 500 return empty
 end
 
+@enduml

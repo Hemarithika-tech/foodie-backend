@@ -1,4 +1,7 @@
+@startuml SampleData
 title 
+
+UserDetails
 
 | Field Name | Data Type | Field Format | Field Size | Example |
 | userid | integer |  | 100 | 1 |
@@ -11,5 +14,5 @@ title
 | IsGetStartedClicked | bit | | 1 | true |
 | IsUserLocation | bit | | 1 | false |
 end title
-
 @enduml
+

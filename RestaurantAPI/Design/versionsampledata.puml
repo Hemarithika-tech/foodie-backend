@@ -1,0 +1,12 @@
+@startuml SampleData
+title 
+
+VersionDetail
+
+| Field Name | Data Type | Field Format | Field Size | Example |
+| platform | varchar |  | 10 | ios |
+| version | varchar | | 10 | 2.1 |
+
+end title
+
+@enduml

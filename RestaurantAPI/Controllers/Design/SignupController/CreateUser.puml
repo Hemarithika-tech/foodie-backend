@@ -1,4 +1,4 @@
-@startuml
+@startuml Controller
 
 title CreateUser - SignupController
 autonumber
@@ -33,4 +33,6 @@ alt (try block)
 else #LightGoldenRodYellow (catch block)
     SignupController -> Request : Exception at Controller level - Server Error 500 return empty
 end
+
+@enduml
 

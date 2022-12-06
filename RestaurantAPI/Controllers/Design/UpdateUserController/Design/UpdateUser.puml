@@ -33,4 +33,5 @@ alt (try block)
 else #LightGoldenRodYellow (catch block)
     UpdateController -> Request : Exception at Controller level - Server Error 500 return empty
 end
+@enduml
 

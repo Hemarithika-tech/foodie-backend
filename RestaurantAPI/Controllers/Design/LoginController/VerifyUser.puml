@@ -1,4 +1,4 @@
-@startuml
+@startuml Controller
 
 title VerifyUser - LoginController
 autonumber
@@ -33,4 +33,6 @@ alt (try block)
 else #LightGoldenRodYellow (catch block)
     LoginController -> Request : Exception at Controller level - Server Error 500 return empty
 end
+
+@enduml
 
