@@ -10,6 +10,7 @@ participant ConfigRepository #LightSeaGreen
 
 
  ConfigService-> ConfigRepository : GetUserData(string platform,int userid)
+    ConfigRepository-> ConfigRepository: Create new instance -> DataTable as dsRecords
 
     ConfigRepository-> ConfigRepository: Create instance as "configbo" for "ConfigBO"
 
@@ -42,5 +43,43 @@ participant ConfigRepository #LightSeaGreen
    ConfigRepository -> ConfigService: Returns configbo
 
 
+== PSEUDO CODE ==
+
+hnote across
+
+TRY
+
+    ASSIGN DataTable dsRecords = new DataTable()
+    Assign ConfigBO configbo = new ConfigBO()
+
+    ASSIGN SqlCommand cmd = new SqlCommand("GetUserData",DBConnectionString)
+    
+    ASSIGN cmd.command = CommandType.StoredProcedure
+    
+    IF DBConnectionString.State == ConnectionState.Closed
+        DBConnectionString.Open()
+
+   Assign Parameter(platform)
+
+   Assign Parameter(userid)
+   
+   Assign ExecuteNonQuery()
+
+    ASSIGN Values from dsRecords to configbo
+
+    ASSIGN UserDetaiBO userbo = new configbo.UserDetaiBO()
+    ASSIGN VersionBO versionbo = new configbo.VersionBO()
+
+
+    DBConnectionString.Close()
+
+
+    **RETURN configbo**
+
+CATCH
+
+    **RETURN ServiceResult { status = ServerError, data = null }**
+    
+end note
 
 @enduml

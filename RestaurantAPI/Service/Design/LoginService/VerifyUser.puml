@@ -10,7 +10,7 @@ participant LoginRepository
 alt (try)
 
    LoginController -> LoginService : VerifyUser(string email,string password)
-   LoginService -> LoginRepository : VerifyUser(string email,string password)
+   LoginService -> LoginRepository : LoginRepository.VerifyUser(string email,string password)
     LoginRepository ->LoginService : Return UserDetailBO
     LoginService -> LoginController : Return ServiceResult - Success (UserDetailBO)
 
@@ -19,3 +19,20 @@ else (catch)
     LoginService -> LoginController : RETURN Failure Result
 
 end
+
+== PSEUDO CODE ==
+
+hnote across
+
+TRY
+
+    ASSIGN UserDetailBO userdetailbo = LoginRepository.VerifyUser(string email,string password)
+
+    **RETURN ServiceResult { status = Success, data = userdetailbo }**
+
+CATCH
+
+    **RETURN ServiceResult { status = ServerError, data = null }**
+    
+end note
+@enduml

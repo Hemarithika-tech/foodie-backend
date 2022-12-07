@@ -11,6 +11,8 @@ participant  VerifyLoginRepository #LightSeaGreen
 
   VerifyLoginService->  VerifyLoginRepository : VerifyUser(string email,string password)
 
+  VerifyLoginRepository->  VerifyLoginRepository : Create new instance -> DataTable as dsRecords
+    
     VerifyLoginRepository-> VerifyLoginRepository: Create instance as "userdetailbo" for "UsersDetailBO"
 
      VerifyLoginRepository ->  VerifyLoginRepository : Create new instance -> SqlCommand as cmd by passing ("VerifyUserDetail",DBConnectionString)
@@ -38,6 +40,39 @@ alt (Response - Data found)
     end
 
    VerifyLoginRepository -> VerifyLoginService: Returns userdetailbo
+
+== PSEUDO CODE ==
+
+hnote across
+
+TRY
+
+    ASSIGN DataTable dsRecords = new DataTable()
+    Assign UserDetaiBO userdetailbo = new UserDetaiBO()
+
+    ASSIGN SqlCommand cmd = new SqlCommand("GetUserData",DBConnectionString)
+    
+    ASSIGN cmd.command = CommandType.StoredProcedure
+    
+    IF DBConnectionString.State == ConnectionState.Closed
+        DBConnectionString.Open()
+
+   Assign Parameter(email)
+
+   Assign Parameter(password)
+   
+   Assign ExecuteNonQuery()
+
+    ASSIGN Values from dsRecords to userdetailbo
+        DBConnectionString.Close()
+
+    **RETURN userdetailbo**
+
+CATCH
+
+    **RETURN ServiceResult { status = ServerError, data = null }**
+    
+end note
 
 
 @enduml

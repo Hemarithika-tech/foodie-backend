@@ -34,4 +34,29 @@ else #LightGoldenRodYellow (catch block)
     ConfigController -> Request : Exception at Controller level - Server Error 500 return empty
 end
 
+== PSEUDO CODE ==
+
+hnote across
+HTTP Authorized GET /  GetVersionAndUserData
+
+TRY
+
+    IF Auth Header is Valid THEN
+
+        ASSIGN ServiceResult<ConfigBO> configbo = ConfigService.GetUserData(string platform,int userid)
+
+        ** RETURN configbo.FinalResult() ** // extension resolver
+    
+    ELSE
+
+        **RETURN StatusCode(401)**
+        
+CATCH
+
+    SET Response Status Code = 500
+    **RETURN JsonResult of new { message = e.message}**
+
+end note
+
+
 @enduml

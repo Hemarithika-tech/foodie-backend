@@ -10,7 +10,7 @@ participant ConfigRepository
 alt (try)
 
    ConfigController -> ConfigService : GetUserData(int userid,string platform)
-   ConfigService -> ConfigRepository : GetUserData(int userid,string platform)
+   ConfigService -> ConfigRepository : ConfigRepository.GetUserData(int userid,string platform)
    ConfigRepository ->ConfigService : Return ConfigBO
    ConfigService -> ConfigController : Return ServiceResult - Success (ConfigBO)
 
@@ -19,3 +19,22 @@ else (catch)
     ConfigService -> ConfigController : RETURN Failure Result
 
 end
+
+
+== PSEUDO CODE ==
+
+hnote across
+
+TRY
+
+    ASSIGN ConfigBO configbo = ConfigRepository.GetUserData(int userid,string platform)
+
+    **RETURN ServiceResult { status = Success, data = configbo }**
+
+CATCH
+
+    **RETURN ServiceResult { status = ServerError, data = null }**
+    
+end note
+
+@enduml

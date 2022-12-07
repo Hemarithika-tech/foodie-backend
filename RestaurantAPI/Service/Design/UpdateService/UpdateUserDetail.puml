@@ -18,3 +18,20 @@ else (catch)
    UpdateUserService -> UpdateUserController : RETURN Failure Result
 
 end
+
+== PSEUDO CODE ==
+
+hnote across
+
+TRY
+
+    ASSIGN bool Response = UpdateRepository.UpdateUser(userbo)
+
+    **RETURN ServiceResult { status = Success, data = Response }**
+
+CATCH
+
+    **RETURN ServiceResult { status = ServerError, data = null }**
+    
+end note
+@enduml

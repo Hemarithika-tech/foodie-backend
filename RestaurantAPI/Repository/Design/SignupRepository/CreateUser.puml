@@ -11,6 +11,8 @@ participant SignupRepository #LightSeaGreen
 
  SignupService-> SignupRepository : CreateUserDetail(UserDetailBO userbo)
 
+  SignupRepository->  SignupRepository : Create new instance -> DataTable as dsRecords
+
     SignupRepository-> SignupRepository: Create instance as "userdetailbo" for "UsersDetailBO"
 
     SignupRepository -> SignupRepository : Create new instance -> SqlCommand as cmd by passing ("CreateUserDetail",DBConnectionString)
@@ -39,5 +41,37 @@ alt (Response - Data found)
    SignupRepository -> SignupService: Returns userdetailbo
 
 
+== PSEUDO CODE ==
+
+hnote across
+
+TRY
+
+    ASSIGN DataTable dsRecords = new DataTable()
+    Assign UserDetaiBO userbo = new UserDetaiBO()
+
+    ASSIGN SqlCommand cmd = new SqlCommand("GetUserData",DBConnectionString)
+    
+    ASSIGN cmd.command = CommandType.StoredProcedure
+    
+    IF DBConnectionString.State == ConnectionState.Closed
+        DBConnectionString.Open()
+
+   Assign Parameter(userbo)
+   
+   Assign ExecuteNonQuery()
+
+
+    ASSIGN Values from dsRecords to userdetailbo
+    
+    DBConnectionString.Close()
+
+    **RETURN userbo**
+
+CATCH
+
+    **RETURN ServiceResult { status = ServerError, data = null }**
+    
+end note
 
 @enduml

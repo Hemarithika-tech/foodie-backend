@@ -15,4 +15,3 @@ UserDetails
 | IsUserLocation | bit | | 1 | false |
 end title
 @enduml
-

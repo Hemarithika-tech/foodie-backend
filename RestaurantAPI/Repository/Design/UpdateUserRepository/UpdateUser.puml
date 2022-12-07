@@ -7,8 +7,9 @@ hide footbox
 participant UpdateUserService
 participant  UpdateUserRepository #LightSeaGreen
 
-
   UpdateUserService->  UpdateUserRepository : UpdateUser(userbo)
+
+  UpdateUserService->  UpdateUserRepository : Create new instance -> DataTable as dsRecords
 
     UpdateUserRepository ->  UpdateUserRepository : Create new instance -> SqlCommand as cmd by passing ("CreateUserDetail",DBConnectionString)
 
@@ -30,6 +31,37 @@ UpdateUserRepository -> UpdateUserRepository: Assign false if 0 rows affected
 
    UpdateUserRepository -> UpdateUserService: Returns IsUserUpdated
 
+
+== PSEUDO CODE ==
+
+hnote across
+
+TRY
+
+    ASSIGN DataTable dsRecords = new DataTable()
+
+    ASSIGN SqlCommand cmd = new SqlCommand("UpdateUser",DBConnectionString)
+    
+    ASSIGN cmd.command = CommandType.StoredProcedure
+    
+    IF DBConnectionString.State == ConnectionState.Closed
+        DBConnectionString.Open()
+
+   Assign Parameter(userbo)
+   
+   Assign ExecuteNonQuery()
+    Assign bool IsUserUpdated
+
+    ASSIGN Values from dsRecords to IsUserUpdated
+        DBConnectionString.Close()
+
+    **RETURN IsUserUpdated**
+
+CATCH
+
+    **RETURN ServiceResult { status = ServerError, data = null }**
+    
+end note
 
 
 @enduml

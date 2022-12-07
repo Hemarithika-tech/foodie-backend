@@ -10,7 +10,7 @@ participant SignupRepository
 alt (try)
 
    SignupController -> SingupService : CreateUser(UserDetailBO userbo)
-   SignupService -> SignupRepository : CreateUser(UserDetailBO userbo)
+   SignupService -> SignupRepository : Signup.CreateUser(UserDetailBO userbo)
    SignupRepository -> SignupService : Return UserDetailBO
     SignupService -> SignupController : Return ServiceResult - Success (UserDetailBO)
 
@@ -18,3 +18,21 @@ else (catch)
    SignupService -> SignupController : RETURN Failure Result
 
 end
+
+== PSEUDO CODE ==
+
+hnote across
+
+TRY
+
+    ASSIGN UserDetailBO userbo = SignupRepository.CreateUser(userbo)
+
+    **RETURN ServiceResult { status = Success, data = userbo }**
+
+CATCH
+
+    **RETURN ServiceResult { status = ServerError, data = null }**
+    
+end note
+
+@enduml
